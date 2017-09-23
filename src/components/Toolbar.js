@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+
 class Toolbar extends Component {
   render() {
     return (
@@ -10,4 +11,5 @@ class Toolbar extends Component {
     );
   }
 }
+
 export default Toolbar;
