@@ -13,7 +13,8 @@ class App extends Component {
         {id: 2, body: "This is a second test", timestamp: Date.now()},
         {id: 3, body: "This is a third test", timestamp: Date.now()}
       ],
-      selectedNoteId: 1
+      selectedNoteId: 1,
+      searchText: ""
     }
   }
 
@@ -52,12 +53,29 @@ class App extends Component {
     const newNotes = this.state.notes.filter(note =>
       note.id !== this.state.selectedNoteId
     );
-    const transformedNotes = transformNotes(newNotes);
+    const transformedNotes = transformNotes(newNotes, this.state.searchText);
     const newSelectedNoteId = transformedNotes.length > 0 ? transformedNotes[0].id : null
     this.setState({
       notes: newNotes,
       selectedNoteId: newSelectedNoteId
     });
+  }
+
+  handleSearchNote = (newSearchText) => {
+    const transformedNotes = transformNotes(this.state.notes, newSearchText);
+    let newSelectedNoteId = null;
+    if (transformedNotes.length > 0) {
+      const selectedNote = transformedNotes.find(note => note.id === this.state.selectedNoteId);
+      if (selectedNote) {
+        newSelectedNoteId = selectedNote.id;
+      } else {
+        newSelectedNoteId = transformedNotes[0].id;
+      }
+    }
+    this.setState({
+      searchText: newSearchText,
+      selectedNoteId: newSelectedNoteId
+    })
   }
 
   render() {
@@ -66,14 +84,16 @@ class App extends Component {
         <Toolbar
           onNewNote={this.handleNewNote}
           onDeleteNote={this.handleDeleteNote}
+          onSearchNote={this.handleSearchNote}
         />
         <NoteContainer
           notes={this.state.notes}
           selectedNoteId={this.state.selectedNoteId}
+          searchText={this.state.searchText}
           onClickNote={this.handleClickNote}
           onNoteEditorChange={this.handleNoteEditorChange}
         />
-      </div>      
+      </div>
     );
   }
 }
