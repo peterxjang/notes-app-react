@@ -7,17 +7,21 @@ class NoteEditor extends Component {
   }
 
   render() {
-    return (
-      <div className="note-editor">
-        <p className="note-editor-info">
-          {formatTimestamp(this.props.selectedNote.timestamp)}
-        </p>
-        <textarea className="note-editor-input"
-          value={this.props.selectedNote.body}
-          onChange={this.handleChange}
-        />
-      </div>
-    );
+    if (this.props.selectedNote) {
+      return (
+        <div className="note-editor">
+          <p className="note-editor-info">
+            {formatTimestamp(this.props.selectedNote.timestamp)}
+          </p>
+          <textarea className="note-editor-input"
+            value={this.props.selectedNote.body}
+            onChange={this.handleChange}
+          />
+        </div>
+      );
+    } else {
+      return null;
+    }
   }
 }
 
